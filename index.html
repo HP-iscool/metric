@@ -1,0 +1,1028 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>METRIC PROGRAM | PERSONNEL EVALUATION</title>
+
+<style>
+:root {
+    --bg: #070707;
+    --white: #f4f4f4;
+    --gray: #999999;
+    --light: #cccccc;
+    --border: rgba(255,255,255,0.16);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 42px 18px;
+    overflow-x: hidden;
+    color: var(--white);
+    background:
+        radial-gradient(ellipse at 50% 8%, rgba(255,255,255,.11), transparent 34%),
+        radial-gradient(ellipse at 12% 78%, rgba(160,160,160,.075), transparent 30%),
+        radial-gradient(ellipse at 88% 65%, rgba(255,255,255,.055), transparent 32%),
+        var(--bg);
+    font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+}
+
+/* 배경의 은은한 빛 */
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    filter: blur(105px);
+    pointer-events: none;
+    animation: glow 9s ease-in-out infinite alternate;
+}
+
+body::before {
+    top: 10%;
+    left: -150px;
+    background: rgba(210,210,210,.13);
+}
+
+body::after {
+    right: -160px;
+    bottom: 2%;
+    background: rgba(255,255,255,.10);
+    animation-delay: -4s;
+}
+
+@keyframes glow {
+    from {
+        transform: translate3d(0,0,0) scale(.9);
+        opacity: .55;
+    }
+    to {
+        transform: translate3d(35px,-20px,0) scale(1.12);
+        opacity: 1;
+    }
+}
+
+/* 전체 레이아웃 */
+
+.shell {
+    width: min(100%, 620px);
+    margin: 0 auto;
+}
+
+.topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,.2);
+    color: #a8a8a8;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+header {
+    padding: 43px 0 34px;
+    text-align: center;
+}
+
+.program-name {
+    margin: 0 0 13px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(29px, 7vw, 43px);
+    font-weight: 400;
+    letter-spacing: 4px;
+}
+
+.subtitle {
+    margin: 0;
+    color: #aaa;
+    font-size: 10px;
+    letter-spacing: 4px;
+}
+
+.section-label {
+    margin: 0 0 24px;
+    color: #bcbcbc;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+}
+
+/* 입력 패널 */
+
+.panel {
+    padding: 27px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: linear-gradient(
+        145deg,
+        rgba(255,255,255,.065),
+        rgba(255,255,255,.018)
+    );
+    box-shadow:
+        0 18px 70px rgba(0,0,0,.35),
+        0 0 35px rgba(255,255,255,.025);
+    backdrop-filter: blur(15px);
+}
+
+.field {
+    margin-bottom: 22px;
+}
+
+label {
+    display: block;
+    margin-bottom: 9px;
+    color: #c6c6c6;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+}
+
+select,
+input {
+    width: 100%;
+    min-height: 45px;
+    padding: 0 13px;
+    border: 1px solid rgba(255,255,255,.17);
+    border-radius: 2px;
+    outline: none;
+    color: #f2f2f2;
+    background: rgba(0,0,0,.42);
+    font: inherit;
+    font-size: 14px;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+select:focus,
+input:focus {
+    border-color: rgba(255,255,255,.62);
+    box-shadow: 0 0 15px rgba(255,255,255,.09);
+}
+
+select option {
+    color: #eee;
+    background: #171717;
+}
+
+.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.hint {
+    margin: 8px 0 0;
+    color: #777;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.hidden {
+    display: none;
+}
+
+/* 버튼 */
+
+.roll-button {
+    width: 100%;
+    min-height: 52px;
+    margin-top: 4px;
+    border: 1px solid rgba(255,255,255,.72);
+    border-radius: 2px;
+    color: #090909;
+    background: #ededed;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: background .2s, box-shadow .2s, transform .2s;
+}
+
+.roll-button:hover {
+    background: #fff;
+    box-shadow: 0 0 25px rgba(255,255,255,.2);
+}
+
+.roll-button:active {
+    transform: scale(.99);
+}
+
+.roll-button:disabled {
+    cursor: wait;
+    opacity: .55;
+}
+
+/* 입력 오류 안내 */
+
+.error-message {
+    display: none;
+    margin-top: 15px;
+    padding: 11px;
+    border: 1px solid rgba(255,255,255,.2);
+    color: #ccc;
+    background: rgba(255,255,255,.04);
+    font-size: 11px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.error-message.show {
+    display: block;
+}
+
+/* 결과 패널 */
+
+.result {
+    display: none;
+    margin-top: 22px;
+    padding: 27px 22px 22px;
+    border: 1px solid rgba(255,255,255,.19);
+    background: rgba(0,0,0,.32);
+    text-align: center;
+}
+
+.result.show {
+    display: block;
+    animation: appear .5s ease both;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(9px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-caption {
+    color: #858585;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+}
+
+/* D100 숫자 회전 */
+
+.dice-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    height: 100px;
+    margin: 15px 0 5px;
+    overflow: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(60px, 14vw, 82px);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 24px rgba(255,255,255,.2);
+}
+
+.digit-window {
+    position: relative;
+    width: .68em;
+    height: 1em;
+    overflow: hidden;
+}
+
+.digit-strip {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(0);
+}
+
+.digit-cell {
+    display: flex;
+    flex-shrink: 0;
+    width: 100%;
+    height: 1em;
+    align-items: center;
+    justify-content: center;
+}
+
+.digit-strip.rolling {
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(.12,.75,.18,1);
+}
+
+.result-type {
+    min-height: 25px;
+    margin: 12px 0 22px;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    opacity: 0;
+}
+
+.result-type.visible {
+    animation: resultReveal .55s ease forwards;
+}
+
+@keyframes resultReveal {
+    from {
+        opacity: 0;
+        transform: translateY(7px);
+        letter-spacing: 8px;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        letter-spacing: 4px;
+    }
+}
+
+.result-type.success,
+.result-type.critical-success {
+    color: #fff;
+    text-shadow: 0 0 17px rgba(255,255,255,.5);
+}
+
+.result-type.failure {
+    color: #a4a4a4;
+}
+
+.result-type.critical-failure {
+    color: #777;
+    text-shadow: 0 0 15px rgba(255,255,255,.15);
+}
+
+/* 계산 결과 */
+
+.result-lines {
+    display: grid;
+    gap: 10px;
+    padding-top: 17px;
+    border-top: 1px solid rgba(255,255,255,.13);
+    text-align: left;
+}
+
+.result-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    color: #aaa;
+    font-size: 11px;
+    opacity: 0;
+    transform: translateY(5px);
+}
+
+.result-line.visible {
+    animation: lineReveal .35s ease forwards;
+}
+
+@keyframes lineReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-line strong {
+    color: #eee;
+    font-size: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.result-note {
+    margin: 17px 0 0;
+    color: #777;
+    font-size: 10px;
+    line-height: 1.7;
+    opacity: 0;
+}
+
+.result-note.visible {
+    animation: appear .5s .1s ease forwards;
+}
+
+/* 하단 */
+
+footer {
+    padding: 24px 0 0;
+    color: #656565;
+    text-align: center;
+    font-size: 9px;
+    letter-spacing: 1.4px;
+    line-height: 1.8;
+}
+
+/* 모바일 */
+
+@media (max-width: 480px) {
+    body {
+        padding: 25px 14px;
+    }
+
+    .panel {
+        padding: 21px 17px;
+    }
+
+    .topline {
+        font-size: 8px;
+        letter-spacing: 1.3px;
+    }
+
+    .two-columns {
+        gap: 10px;
+    }
+}
+
+/* 움직임 줄이기 설정 */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="shell">
+
+    <div class="topline">
+        <span>METRIC PROGRAM</span>
+        <span>INTERNAL SYSTEM / 01</span>
+    </div>
+
+    <header>
+        <h1 class="program-name">METRIC PROGRAM</h1>
+        <p class="subtitle">PERSONNEL EVALUATION</p>
+    </header>
+
+    <main>
+
+        <!-- 판정 입력 -->
+
+        <section class="panel">
+
+            <h2 class="section-label">
+                능력 판정 / ABILITY CHECK
+            </h2>
+
+            <div class="field">
+                <label for="stat">
+                    판정 항목 / ATTRIBUTE
+                </label>
+
+                <select id="stat">
+                    <option value="근력">근력</option>
+                    <option value="민첩">민첩</option>
+                    <option value="체력">체력</option>
+                    <option value="행운">행운</option>
+                    <option value="지능">지능</option>
+                    <option value="정신력">정신력</option>
+                    <option value="free">자유 스탯</option>
+                </select>
+            </div>
+
+            <div class="field hidden" id="free-stat-field">
+                <label for="free-stat-name">
+                    자유 스탯명 / CUSTOM ATTRIBUTE
+                </label>
+
+                <input
+                    id="free-stat-name"
+                    type="text"
+                    maxlength="24"
+                    placeholder="판정할 스탯명을 입력하세요"
+                >
+            </div>
+
+            
+<div class="field">
+    <label for="difficulty">
+        판정 난이도 / DIFFICULTY
+    </label>
+
+    <select id="difficulty">
+        <option value="">직접 입력</option>
+        <option value="80">1단계 · 매우 쉬움 (80)</option>
+        <option value="65">2단계 · 쉬움 (65)</option>
+        <option value="50">3단계 · 보통 (50)</option>
+        <option value="35">4단계 · 어려움 (35)</option>
+        <option value="20">5단계 · 매우 어려움 (20)</option>
+    </select>
+</div>
+
+<div class="two-columns">
+
+    <div class="field">
+        <label for="target">
+            목표 수치 / TARGET
+        </label>
+
+        <input
+            id="target"
+            type="number"
+            min="1"
+            max="100"
+            step="1"
+            placeholder="예: 50"
+            inputmode="numeric"
+        >
+    </div>
+
+
+                <div class="field">
+                    <label for="stat-value">
+                        스탯 수치 / VALUE
+                    </label>
+
+                    <select id="stat-value">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button class="roll-button" id="roll-button" type="button">
+                ROLL D100
+            </button>
+
+            <div class="error-message" id="error-message"></div>
+
+        </section>
+
+
+        <!-- 판정 결과 -->
+
+        <section class="result" id="result" aria-live="polite">
+
+            <div class="result-caption">
+                D100 RESULT
+            </div>
+
+            <!-- 숫자 세 자리 각각 회전 -->
+
+            <div class="dice-display" id="dice-display">
+
+                <div class="digit-window">
+                    <div class="digit-strip" id="digit-1">
+                        <div class="digit-cell">0</div>
+                    </div>
+                </div>
+
+                <div class="digit-window">
+                    <div class="digit-strip" id="digit-2">
+                        <div class="digit-cell">0</div>
+                    </div>
+                </div>
+
+                <div class="digit-window">
+                    <div class="digit-strip" id="digit-3">
+                        <div class="digit-cell">0</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="result-type" id="result-type"></div>
+
+            <div class="result-lines">
+
+                <div class="result-line">
+                    <span>판정 항목</span>
+                    <strong id="out-stat"></strong>
+                </div>
+
+                <div class="result-line">
+                    <span>목표 수치</span>
+                    <strong id="out-target"></strong>
+                </div>
+
+                <div class="result-line">
+                    <span>원본 주사위</span>
+                    <strong id="out-raw"></strong>
+                </div>
+
+                <div class="result-line">
+                    <span>스탯 보정치</span>
+                    <strong id="out-bonus"></strong>
+                </div>
+
+                <div class="result-line">
+                    <span>최종 판정값</span>
+                    <strong id="out-final"></strong>
+                </div>
+
+            </div>
+
+            <p class="result-note" id="result-note"></p>
+
+        </section>
+
+    </main>
+
+    <footer>
+        METRIC PROGRAM · PERSONNEL MANAGEMENT SYSTEM
+        <br>
+        AUTHORIZED PERSONNEL ONLY
+    </footer>
+
+</div>
+
+
+<script>
+
+// ====================================
+// 기본 설정
+// ====================================
+
+const statSelect = document.getElementById("stat");
+const freeStatField = document.getElementById("free-stat-field");
+const freeStatName = document.getElementById("free-stat-name");
+
+const targetInput = document.getElementById("target");
+const statValue = document.getElementById("stat-value");
+
+const difficultySelect = document.getElementById("difficulty");
+
+// 난이도 선택 시 목표 수치 자동 입력
+
+difficultySelect.addEventListener("change", () => {
+
+    const selectedTarget = difficultySelect.value;
+
+    if (selectedTarget !== "") {
+        targetInput.value = selectedTarget;
+    }
+
+});
+
+
+targetInput.addEventListener("input", () => {
+
+    const selectedTarget = difficultySelect.value;
+
+    if (
+        selectedTarget !== "" &&
+        targetInput.value !== selectedTarget
+    ) {
+        difficultySelect.value = "";
+    }
+
+});
+
+const rollButton = document.getElementById("roll-button");
+const resultBox = document.getElementById("result");
+const errorMessage = document.getElementById("error-message");
+
+
+// 스탯별 보정치
+
+const statBonuses = {
+    1: 0,
+    2: 5,
+    3: 10,
+    4: 15,
+    5: 20
+};
+
+
+// ====================================
+// 자유 스탯 입력란
+// ====================================
+
+statSelect.addEventListener("change", () => {
+
+    const isFreeStat = statSelect.value === "free";
+
+    freeStatField.classList.toggle("hidden", !isFreeStat);
+
+    if (isFreeStat) {
+        freeStatName.focus();
+    }
+
+});
+
+
+// ====================================
+// 숫자 표시 함수
+// ====================================
+
+function paddedNumber(number) {
+    return String(number).padStart(3, "0");
+}
+
+
+// ====================================
+// 오류 안내
+// ====================================
+
+function showError(message) {
+
+    errorMessage.textContent = message;
+    errorMessage.classList.add("show");
+
+}
+
+function hideError() {
+
+    errorMessage.textContent = "";
+    errorMessage.classList.remove("show");
+
+}
+
+
+// ====================================
+// 숫자 회전 애니메이션
+// ====================================
+
+function rollDigits(finalNumber) {
+
+    return new Promise(resolve => {
+
+        const digits = paddedNumber(finalNumber).split("");
+
+        const strips = [
+            document.getElementById("digit-1"),
+            document.getElementById("digit-2"),
+            document.getElementById("digit-3")
+        ];
+
+        // 각 숫자판을 새로 구성
+
+        strips.forEach(strip => {
+
+            strip.classList.remove("rolling");
+            strip.style.transition = "none";
+            strip.style.transform = "translateY(0px)";
+            strip.innerHTML = "";
+
+            // 숫자 0~9를 반복해서 배치
+            // 여러 바퀴 회전할 수 있도록 충분히 생성
+
+            for (let cycle = 0; cycle < 23; cycle++) {
+
+                for (let number = 0; number <= 9; number++) {
+
+                    const cell = document.createElement("div");
+
+                    cell.className = "digit-cell";
+                    cell.textContent = number;
+
+                    strip.appendChild(cell);
+
+                }
+
+            }
+
+        });
+
+
+        // 브라우저가 새 숫자판을 먼저 그리도록 함
+
+        void document.getElementById("dice-display").offsetHeight;
+
+
+        strips.forEach((strip, index) => {
+
+            const digit = Number(digits[index]);
+
+            // 20바퀴 + 최종 숫자 위치
+            const destination = 200 + digit;
+
+            // 한 칸의 실제 높이를 계산
+            const cellHeight = strip.children[0].getBoundingClientRect().height;
+
+            // 세 자리 숫자가 순서대로 멈추도록 시간차 적용
+            const duration = 1450 + index * 180;
+            const delay = index * 130;
+
+            strip.style.transition =
+                `transform ${duration}ms cubic-bezier(.12,.75,.18,1) ${delay}ms`;
+
+            strip.classList.add("rolling");
+
+            strip.style.transform =
+                `translateY(-${destination * cellHeight}px)`;
+
+        });
+
+
+        // 마지막 숫자가 멈추는 시점에 판정 종료
+
+        setTimeout(() => {
+            resolve();
+        }, 2300);
+
+    });
+
+}
+
+
+// ====================================
+// 결과 공개 애니메이션
+// ====================================
+
+function revealResults() {
+
+    const lines = document.querySelectorAll(".result-line");
+    const note = document.getElementById("result-note");
+
+    lines.forEach((line, index) => {
+
+        line.classList.remove("visible");
+
+        setTimeout(() => {
+            line.classList.add("visible");
+        }, index * 100);
+
+    });
+
+    note.classList.remove("visible");
+
+    setTimeout(() => {
+        note.classList.add("visible");
+    }, lines.length * 100);
+
+}
+
+
+// ====================================
+// D100 판정 실행
+// ====================================
+
+rollButton.addEventListener("click", async () => {
+
+    hideError();
+
+    const target = Number(targetInput.value);
+    const selectedStat = statSelect.value;
+    const value = Number(statValue.value);
+
+
+    // 목표 수치 검사
+
+    if (
+        targetInput.value === "" ||
+        !Number.isInteger(target) ||
+        target < 1 ||
+        target > 100
+    ) {
+
+        showError("목표 수치를 1부터 100 사이의 정수로 입력해 주세요.");
+
+        targetInput.focus();
+
+        return;
+
+    }
+
+
+    // 자유 스탯명 검사
+
+    if (
+        selectedStat === "free" &&
+        !freeStatName.value.trim()
+    ) {
+
+        showError("자유 스탯명을 입력해 주세요.");
+
+        freeStatName.focus();
+
+        return;
+
+    }
+
+
+    // 연속 클릭 방지
+
+    rollButton.disabled = true;
+    rollButton.textContent = "ROLLING...";
+
+
+    // 결과 패널 초기화
+
+    resultBox.classList.remove("show");
+
+    const resultType = document.getElementById("result-type");
+
+    resultType.className = "result-type";
+    resultType.textContent = "";
+
+    document.querySelectorAll(".result-line").forEach(line => {
+        line.classList.remove("visible");
+    });
+
+    document.getElementById("result-note").classList.remove("visible");
+
+
+    // 판정 데이터 생성
+
+    const statName =
+        selectedStat === "free"
+        ? freeStatName.value.trim()
+        : selectedStat;
+
+    const raw = Math.floor(Math.random() * 100) + 1;
+
+    const bonus = statBonuses[value];
+
+    const finalValue = raw - bonus;
+
+
+    // 판정 결과 결정
+
+    let resultText;
+    let resultClass;
+    let note;
+
+
+    if (raw === 1) {
+    resultText = "대성공";
+    resultClass = "critical-success";
+} else if (raw === 100) {
+    resultText = "대실패";
+    resultClass = "critical-failure";
+} else if (finalValue <= target) {
+    resultText = "성공";
+    resultClass = "success";
+} else {
+    resultText = "실패";
+    resultClass = "failure";
+}
+
+
+    // 숫자 회전 시작
+
+    resultBox.classList.add("show");
+
+    await rollDigits(raw);
+
+
+    // 숫자가 멈춘 뒤 결과 공개
+
+    resultType.textContent = resultText;
+    resultType.className = "result-type " + resultClass;
+
+    setTimeout(() => {
+        resultType.classList.add("visible");
+    }, 100);
+
+
+    // 계산 결과 입력
+
+    document.getElementById("out-stat").textContent =
+        statName + " (" + value + ")";
+
+    document.getElementById("out-target").textContent =
+        paddedNumber(target);
+
+    document.getElementById("out-raw").textContent =
+        paddedNumber(raw);
+
+    document.getElementById("out-bonus").textContent =
+    "-" + paddedNumber(bonus);
+
+    document.getElementById("out-final").textContent =
+    String(finalValue).padStart(3, "0");
+
+    document.getElementById("result-note").textContent = note;
+
+
+    // 결과 세부 정보 순차 공개
+
+    setTimeout(() => {
+        revealResults();
+    }, 450);
+
+
+    // 버튼 복구
+
+    rollButton.disabled = false;
+    rollButton.textContent = "ROLL D100";
+
+    resultBox.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+    });
+
+});
+
+</script>
+
+</body>
+</html>
